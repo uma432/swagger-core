@@ -53,6 +53,18 @@ public @interface ApiResponse {
      **/
     String description() default "";
 
+
+    /**
+     * Provides a java class as return type of the response to be used as shortcut. When provided, Content field will be ignored.
+     *
+     * @return a class representing the response return type
+     *
+     * @since 2.0.8
+     **/
+    Class<?> implementation() default Void.class;
+
+    Class<?> type() default Void.class;
+
     /**
      * The HTTP response code, or 'default', for the supplied response. May only have 1 default entry.
      *

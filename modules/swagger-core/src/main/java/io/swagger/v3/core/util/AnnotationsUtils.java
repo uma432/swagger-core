@@ -1078,6 +1078,38 @@ public abstract class AnnotationsUtils {
         return getSchema(annotationContent.schema(), annotationContent.array(), isArray, schemaImplementation, components, jsonViewAnnotation);
     }
 
+    public static Optional<? extends Schema> getSchemaFromType(Class<?> schemaImplementation,
+                                                               Components components,
+                                                               JsonView jsonViewAnnotation) {
+        if (schemaImplementation != Void.class) {
+            Map<String, Schema> schemaMap;
+            Schema schemaObject = new Schema();
+            if (schemaImplementation.getName().startsWith("java.lang")) {
+                schemaObject.setType(schemaImplementation.getSimpleName().toLowerCase());
+            } else {
+                ResolvedSchema resolvedSchema = ModelConverters.getInstance().readAllAsResolvedSchema(new AnnotatedType().type(schemaImplementation).jsonViewAnnotation(jsonViewAnnotation));
+                if (resolvedSchema != null) {
+                    schemaMap = resolvedSchema.referencedSchemas;
+                    schemaMap.forEach((key, schema) -> {
+                        components.addSchemas(key, schema);
+                    });
+                    if (resolvedSchema.schema != null && StringUtils.isNotBlank(resolvedSchema.schema.getName())) {
+                        schemaObject.set$ref(COMPONENTS_REF + resolvedSchema.schema.getName());
+                    } else if (resolvedSchema.schema != null){
+                        schemaObject = resolvedSchema.schema;
+                    }
+                }
+            }
+            if (StringUtils.isBlank(schemaObject.get$ref()) && StringUtils.isBlank(schemaObject.getType())) {
+                // default to string
+                schemaObject.setType("string");
+            }
+            return Optional.of(schemaObject);
+        } else {
+            return Optional.empty();
+        }
+    }
+
     public static Optional<? extends Schema> getSchema(io.swagger.v3.oas.annotations.media.Schema schemaAnnotation,
                                                        io.swagger.v3.oas.annotations.media.ArraySchema arrayAnnotation,
                                                        boolean isArray,

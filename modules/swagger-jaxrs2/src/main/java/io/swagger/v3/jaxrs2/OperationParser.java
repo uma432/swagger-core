@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.links.Link;
+import io.swagger.v3.oas.models.media.Content;
+import io.swagger.v3.oas.models.media.MediaType;
 import io.swagger.v3.oas.models.parameters.RequestBody;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
@@ -88,8 +90,17 @@ public class OperationParser {
                 }
             }
 
-            AnnotationsUtils.getContent(response.content(), classProduces == null ? new String[0] : classProduces.value(),
-                    methodProduces == null ? new String[0] : methodProduces.value(), null, components, jsonViewAnnotation).ifPresent(apiResponseObject::content);
+            if (!Void.class.equals(response.type())) {
+                Content content = new Content();
+                MediaType mediaType = new MediaType();
+                AnnotationsUtils.getSchemaFromType(response.type(), components, jsonViewAnnotation).ifPresent(mediaType::setSchema);
+                AnnotationsUtils.applyTypes(classProduces == null ? new String[0] : classProduces.value(),
+                        methodProduces == null ? new String[0] : methodProduces.value(), content, mediaType);
+                apiResponseObject.content(content);
+            } else {
+                AnnotationsUtils.getContent(response.content(), classProduces == null ? new String[0] : classProduces.value(),
+                        methodProduces == null ? new String[0] : methodProduces.value(), null, components, jsonViewAnnotation).ifPresent(apiResponseObject::content);
+            }
             AnnotationsUtils.getHeaders(response.headers(), jsonViewAnnotation).ifPresent(apiResponseObject::headers);
             if (StringUtils.isNotBlank(apiResponseObject.getDescription()) || apiResponseObject.getContent() != null || apiResponseObject.getHeaders() != null) {
 

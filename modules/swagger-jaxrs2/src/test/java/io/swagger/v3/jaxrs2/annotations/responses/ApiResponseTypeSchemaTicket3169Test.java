@@ -4,14 +4,14 @@ import io.swagger.v3.jaxrs2.annotations.AbstractAnnotationTest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.callbacks.Callback;
 import io.swagger.v3.oas.annotations.callbacks.Callbacks;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.testng.annotations.Test;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-
-import static org.testng.Assert.assertEquals;
 
 public class ApiResponseTypeSchemaTicket3169Test extends AbstractAnnotationTest {
 
@@ -41,6 +41,7 @@ public class ApiResponseTypeSchemaTicket3169Test extends AbstractAnnotationTest 
                 "    MyModel:\n" +
                 "      type: object\n";
         compareAsYaml(ResponseWithType.class, expectedYaml);
+        compareAsYaml(ResponseWithTypeImpl.class, expectedYaml);
     }
 
     static class ResponseWithType {
@@ -68,6 +69,23 @@ public class ApiResponseTypeSchemaTicket3169Test extends AbstractAnnotationTest 
 
     }
 
+    static class ResponseWithTypeImpl {
+        @Operation(
+                summary = "Op",
+                description = "Response return a MyModel Type",
+                operationId = "simpleGET",
+                responses = {
+                        @ApiResponse(
+                                responseCode = "200",
+                                description = "voila!",
+                                content = @Content(schema = @Schema(implementation = MyModel.class)))
+                })
+        @GET
+        @Path("/path")
+        public void simpleGet(String data) {
+        }
+    }
+
     @Test
     public void testApiResponseTypeVoidSchemaTicket3169Test() throws Exception {
         String expectedYaml = "openapi: 3.0.1\n" +
@@ -86,6 +104,7 @@ public class ApiResponseTypeSchemaTicket3169Test extends AbstractAnnotationTest 
                 "        200:\n" +
                 "          description: voila!\n";
         compareAsYaml(ResponseWithTypeVoid.class, expectedYaml);
+        //compareAsYaml(ResponseWithTypeVoidImpl.class, expectedYaml);
     }
 
     static class ResponseWithTypeVoid {
@@ -98,6 +117,23 @@ public class ApiResponseTypeSchemaTicket3169Test extends AbstractAnnotationTest 
                                 responseCode = "200",
                                 description = "voila!",
                                 type = Void.class)
+                })
+        @GET
+        @Path("/path")
+        public void simpleGet(String data) {
+        }
+    }
+
+    static class ResponseWithTypeVoidImpl {
+        @Operation(
+                summary = "Op",
+                description = "Response return a Void Type ",
+                operationId = "getWithNoParameters",
+                responses = {
+                        @ApiResponse(
+                                responseCode = "200",
+                                description = "voila!",
+                                content = @Content(schema = @Schema(implementation = Void.class)))
                 })
         @GET
         @Path("/path")
@@ -139,6 +175,7 @@ public class ApiResponseTypeSchemaTicket3169Test extends AbstractAnnotationTest 
                 "    AnotherModel:\n" +
                 "      type: object\n";
         compareAsYaml(ResponseWithTypeInApiResponses.class, expectedYaml);
+        compareAsYaml(ResponseWithTypeInApiResponsesImpl.class, expectedYaml);
     }
 
     static class ResponseWithTypeInApiResponses {
@@ -162,13 +199,33 @@ public class ApiResponseTypeSchemaTicket3169Test extends AbstractAnnotationTest 
         }
     }
 
-    @Test
-    public void simpleCallbacksWithTypeInApiResponse() {
-        String openApiYAML = readIntoYaml(ApiResponseTypeSchemaTicket3169Test.SimpleCallbacksTestWithApiReponseType.class);
-        int start = openApiYAML.indexOf("get:");
-        int end = openApiYAML.length() - 1;
+    static class ResponseWithTypeInApiResponsesImpl {
+        @Operation(
+                summary = "Op",
+                description = "Response return a Void Type ",
+                operationId = "getWithNoParameters")
+        @GET
+        @ApiResponses(value = {
+                @ApiResponse(
+                        responseCode = "200",
+                        description = "voila!",
+                        content = @Content(schema = @Schema(implementation = MyModel.class))),
+                @ApiResponse(
+                        responseCode = "400",
+                        description = "voila!",
+                        content = @Content(schema = @Schema(implementation = AnotherModel.class))),
+        })
+        @Path("/path")
+        public void simpleGet(String data) {
+        }
+    }
 
-        String expectedYAML = "get:\n" +
+    @Test
+    public void simpleCallbacksWithTypeInApiResponse() throws  Exception{
+        String expectedYAML = "openapi: 3.0.1\n" +
+                "paths:\n" +
+                "  /path:\n" +
+                "    get:\n" +
                 "      summary: Simple get operation\n" +
                 "      operationId: getWithNoParameters\n" +
                 "      responses:\n" +
@@ -184,10 +241,9 @@ public class ApiResponseTypeSchemaTicket3169Test extends AbstractAnnotationTest 
                 "components:\n" +
                 "  schemas:\n" +
                 "    MyModel:\n" +
-                "      type: object";
-        String extractedYAML = openApiYAML.substring(start, end);
-
-        assertEquals(extractedYAML, expectedYAML);
+                "      type: object\n";
+        compareAsYaml(SimpleCallbacksTestWithApiReponseType.class, expectedYAML);
+        compareAsYaml(SimpleCallbacksTestWithApiReponseTypeImpl.class, expectedYAML);
     }
 
     static class SimpleCallbacksTestWithApiReponseType {
@@ -202,6 +258,25 @@ public class ApiResponseTypeSchemaTicket3169Test extends AbstractAnnotationTest 
                                 responseCode = "200",
                                 description = "voila!",
                                 type = MyModel.class)
+                })
+        @GET
+        @Path("/path")
+        public void simpleGet() {
+        }
+    }
+
+    static class SimpleCallbacksTestWithApiReponseTypeImpl {
+        @Callbacks({
+                @Callback(name = "testCallback1", operation = @Operation(), callbackUrlExpression = "localhost:9080/airlines/reviews/{id}/1")
+        })
+        @Operation(
+                summary = "Simple get operation",
+                operationId = "getWithNoParameters",
+                responses = {
+                        @ApiResponse(
+                                responseCode = "200",
+                                description = "voila!",
+                                content = @Content(schema = @Schema(implementation = MyModel.class)))
                 })
         @GET
         @Path("/path")

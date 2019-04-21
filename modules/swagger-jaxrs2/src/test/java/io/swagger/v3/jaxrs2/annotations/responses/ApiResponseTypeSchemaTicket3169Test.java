@@ -104,7 +104,7 @@ public class ApiResponseTypeSchemaTicket3169Test extends AbstractAnnotationTest 
                 "        200:\n" +
                 "          description: voila!\n";
         compareAsYaml(ResponseWithTypeVoid.class, expectedYaml);
-        //compareAsYaml(ResponseWithTypeVoidImpl.class, expectedYaml);
+        compareAsYaml(ResponseWithTypeVoidImpl.class, expectedYaml);
     }
 
     static class ResponseWithTypeVoid {

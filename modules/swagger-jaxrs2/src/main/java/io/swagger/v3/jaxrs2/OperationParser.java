@@ -2,6 +2,7 @@ package io.swagger.v3.jaxrs2;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.core.util.AnnotationsUtils;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.links.Link;
 import io.swagger.v3.oas.models.media.Content;
@@ -98,7 +99,11 @@ public class OperationParser {
                         methodProduces == null ? new String[0] : methodProduces.value(), content, mediaType);
                 apiResponseObject.content(content);
             } else {
-                AnnotationsUtils.getContent(response.content(), classProduces == null ? new String[0] : classProduces.value(),
+                io.swagger.v3.oas.annotations.media.Content[] content = response.content();
+                if (content.length > 0 && content[0] != null && isContentNull(content[0])) {
+                    content = null;
+                }
+                AnnotationsUtils.getContent(content, classProduces == null ? new String[0] : classProduces.value(),
                         methodProduces == null ? new String[0] : methodProduces.value(), null, components, jsonViewAnnotation).ifPresent(apiResponseObject::content);
             }
             AnnotationsUtils.getHeaders(response.headers(), jsonViewAnnotation).ifPresent(apiResponseObject::headers);
@@ -120,6 +125,37 @@ public class OperationParser {
             return Optional.empty();
         }
         return Optional.of(apiResponsesObject);
+    }
+
+    private static boolean isContentNull(io.swagger.v3.oas.annotations.media.Content content) {
+        if (content.examples().length > 0 || !content.mediaType().isEmpty() || !isSchemaNull(content.array().schema()) ||
+                content.encoding().length > 0 || content.extensions().length > 0) {
+            return false;
+        }
+
+        final Schema schema = content.schema();
+        if (!isSchemaNull(schema)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private static boolean isSchemaNull(final Schema schema) {
+        if (StringUtils.isNotEmpty(schema.name()) || StringUtils.isNotEmpty(schema.description()) ||
+                StringUtils.isNotEmpty(schema.type()) || StringUtils.isNotEmpty(schema.format()) ||
+                StringUtils.isNotEmpty(schema.example()) || StringUtils.isNotEmpty(schema.ref()) ||
+                StringUtils.isNotEmpty(schema.minimum()) || StringUtils.isNotEmpty(schema.maximum()) ||
+                StringUtils.isNotEmpty(schema.title()) || StringUtils.isNotEmpty(schema.defaultValue()) ||
+                StringUtils.isNotEmpty(schema.pattern()) || StringUtils.isNotEmpty(schema.discriminatorProperty())) {
+            return false;
+        }
+
+        Class<?> implementation = schema.implementation();
+        if (!"java.lang.Void".equals(implementation.getName())) {
+            return false;
+        }
+        return true;
     }
 
 }

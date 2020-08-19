@@ -33,7 +33,7 @@ import java.util.Objects;
 /**
  * Components
  *
- * @see "https://github.com/OAI/OpenAPI-Specification/blob/3.0.1/versions/3.0.1.md#componentsObject"
+ * @see "https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.1.0.md#componentsObject"
  */
 
 public class Components {
@@ -46,6 +46,7 @@ public class Components {
     private Map<String, SecurityScheme> securitySchemes = null;
     private Map<String, Link> links = null;
     private Map<String, Callback> callbacks = null;
+    private Map<String, PathItem> pathItems = null;
     private java.util.Map<String, Object> extensions = null;
 
     /**
@@ -291,6 +292,25 @@ public class Components {
         return this;
     }
 
+    /**
+     * returns the pathItems property from a Components instance.
+     *
+     * @return Map&lt;String, PathItem&gt; pathItems
+     **/
+
+    public Map<String, PathItem> getPathItems() {
+        return pathItems;
+    }
+
+    public void setPathItems(Map<String, PathItem> pathItems) {
+        this.pathItems = pathItems;
+    }
+
+    public Components pathItems(Map<String, PathItem> pathItems) {
+        this.pathItems = pathItems;
+        return this;
+    }
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -309,12 +329,13 @@ public class Components {
                 Objects.equals(this.securitySchemes, components.securitySchemes) &&
                 Objects.equals(this.links, components.links) &&
                 Objects.equals(this.callbacks, components.callbacks) &&
+                Objects.equals(this.pathItems, components.pathItems) &&
                 Objects.equals(this.extensions, components.extensions);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(schemas, responses, parameters, examples, requestBodies, headers, securitySchemes, links, callbacks, extensions);
+        return Objects.hash(schemas, responses, parameters, examples, requestBodies, headers, securitySchemes, links, callbacks, pathItems, extensions);
     }
 
     public java.util.Map<String, Object> getExtensions() {
@@ -354,6 +375,7 @@ public class Components {
         sb.append("    securitySchemes: ").append(toIndentedString(securitySchemes)).append("\n");
         sb.append("    links: ").append(toIndentedString(links)).append("\n");
         sb.append("    callbacks: ").append(toIndentedString(callbacks)).append("\n");
+        sb.append("    pathItems: ").append(toIndentedString(pathItems)).append("\n");
         sb.append("}");
         return sb.toString();
     }

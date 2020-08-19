@@ -1,11 +1,15 @@
 package io.swagger.v3.oas.models.media;
 
+import io.swagger.v3.oas.models.Components;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Discriminator {
     private String propertyName;
     private Map<String, String> mapping;
+    private Map<String, Object> extensions;
+
 
     public Discriminator propertyName(String propertyName) {
         this.propertyName = propertyName;
@@ -41,6 +45,29 @@ public class Discriminator {
         this.mapping = mapping;
     }
 
+    public Map<String, Object> getExtensions() {
+        return extensions;
+    }
+
+    public void addExtension(String name, Object value) {
+        if (name == null || name.isEmpty() || !name.startsWith("x-")) {
+            return;
+        }
+        if (this.extensions == null) {
+            this.extensions = new java.util.LinkedHashMap<>();
+        }
+        this.extensions.put(name, value);
+    }
+
+    public void setExtensions(Map<String, Object> extensions) {
+        this.extensions = extensions;
+    }
+
+    public Discriminator extensions(java.util.Map<String, Object> extensions) {
+        this.extensions = extensions;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -55,6 +82,10 @@ public class Discriminator {
         if (propertyName != null ? !propertyName.equals(that.propertyName) : that.propertyName != null) {
             return false;
         }
+
+        if (extensions != null ? !extensions.equals(that.extensions) : that.extensions != null) {
+            return false;
+        }
         return mapping != null ? mapping.equals(that.mapping) : that.mapping == null;
 
     }
@@ -63,6 +94,7 @@ public class Discriminator {
     public int hashCode() {
         int result = propertyName != null ? propertyName.hashCode() : 0;
         result = 31 * result + (mapping != null ? mapping.hashCode() : 0);
+        result = 31 * result + (extensions != null ? extensions.hashCode() : 0);
         return result;
     }
 

@@ -30,7 +30,7 @@ import java.util.Objects;
 /**
  * Schema
  *
- * @see "https://github.com/OAI/OpenAPI-Specification/blob/3.0.1/versions/3.0.1.md#schemaObject"
+ * @see "https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.1.0.md#schemaObject"
  */
 
 public class Schema<T> {
@@ -62,6 +62,21 @@ public class Schema<T> {
     private Boolean nullable = null;
     private Boolean readOnly = null;
     private Boolean writeOnly = null;
+
+    private String $schema = null;
+    private String $id = null;
+    private String $anchor = null;
+    private String $recursiveRef = null;
+    private String $recursiveAnchor = null;
+    private Map<String, Object> $defs = null;
+    private Map<String, Object> $vocabulary = null;
+    private Map<String, Object> propertyNames = null;
+    private Map<String, Object> patternProperties = null;
+    private Map<String, Object> dependentRequired = null;
+    private Map<String, Object> dependentSchemas = null;
+    protected List<T> examples = null;
+    private Object unevaluatedProperties = null;
+
     protected T example = null;
     private ExternalDocumentation externalDocs = null;
     private Boolean deprecated = null;
@@ -770,6 +785,175 @@ public class Schema<T> {
         this.exampleSetFlag = exampleSetFlag;
     }
 
+    public String get$schema() {
+        return $schema;
+    }
+
+    public void set$schema(String $schema) {
+        this.$schema = $schema;
+    }
+
+    public Schema $schema(String $schema) {
+        this.$schema = $schema;
+        return this;
+    }
+
+    public String get$id() {
+        return $id;
+    }
+
+    public void set$id(String $id) {
+        this.$id = $id;
+    }
+
+    public Schema $id(String $id) {
+        this.$id = $id;
+        return this;
+    }
+
+    public String get$anchor() {
+        return $anchor;
+    }
+
+    public void set$anchor(String $anchor) {
+        this.$anchor = $anchor;
+    }
+
+    public Schema $anchor(String $anchor) {
+        this.$anchor = $anchor;
+        return this;
+    }
+
+    public String get$recursiveRef() {
+        return $recursiveRef;
+    }
+
+    public void set$recursiveRef(String $recursiveRef) {
+        this.$recursiveRef = $recursiveRef;
+    }
+
+    public Schema $recursiveRef(String $recursiveRef) {
+        this.$recursiveRef = $recursiveRef;
+        return this;
+    }
+
+    public String get$recursiveAnchor() {
+        return $recursiveAnchor;
+    }
+
+    public void set$recursiveAnchor(String $recursiveAnchor) {
+        this.$recursiveAnchor = $recursiveAnchor;
+    }
+
+    public Schema $recursiveAnchor(String $recursiveAnchor) {
+        this.$recursiveAnchor = $recursiveAnchor;
+        return this;
+    }
+
+    public Map<String, Object> get$defs() {
+        return $defs;
+    }
+
+    public void set$defs(Map<String, Object> $defs) {
+        this.$defs = $defs;
+    }
+
+    public Schema $defs(Map<String, Object> $defs) {
+        this.$defs = $defs;
+        return this;
+    }
+
+    public Map<String, Object> get$vocabulary() {
+        return $vocabulary;
+    }
+
+    public void set$vocabulary(Map<String, Object> $vocabulary) {
+        this.$vocabulary = $vocabulary;
+    }
+
+    public Schema $vocabulary(Map<String, Object> $vocabulary) {
+        this.$vocabulary = $vocabulary;
+        return this;
+    }
+
+    public Map<String, Object> getPropertyNames() {
+        return propertyNames;
+    }
+
+    public void setPropertyNames(Map<String, Object> propertyNames) {
+        this.propertyNames = propertyNames;
+    }
+
+    public Schema propertyNames(Map<String, Object> propertyNames) {
+        this.propertyNames = propertyNames;
+        return this;
+    }
+
+    public Map<String, Object> getPatternProperties() {
+        return patternProperties;
+    }
+
+    public void setPatternProperties(Map<String, Object> patternProperties) {
+        this.patternProperties = patternProperties;
+    }
+
+    public Schema patternProperties(Map<String, Object> patternProperties) {
+        this.patternProperties = patternProperties;
+        return this;
+    }
+
+    public Map<String, Object> getDependentRequired() {
+        return dependentRequired;
+    }
+
+    public void setDependentRequired(Map<String, Object> dependentRequired) {
+        this.dependentRequired = dependentRequired;
+    }
+
+    public Schema dependentRequired(Map<String, Object> dependentRequired) {
+        this.dependentRequired = dependentRequired;
+        return this;
+    }
+
+    public Map<String, Object> getDependentSchemas() {
+        return dependentSchemas;
+    }
+
+    public void setDependentSchemas(Map<String, Object> dependentSchemas) {
+        this.dependentSchemas = dependentSchemas;
+    }
+
+    public Schema dependentSchemas(Map<String, Object> dependentSchemas) {
+        this.dependentSchemas = dependentSchemas;
+        return this;
+    }
+
+    public List<T> getExamples() {
+        return examples;
+    }
+
+    public void setExamples(List<T> examples) {
+        this.examples = examples;
+    }
+
+    public Schema examples(List<T> examples) {
+        this.examples = examples;
+        return this;
+    }
+
+    public Object getUnevaluatedProperties() {
+        return unevaluatedProperties;
+    }
+
+    public void setUnevaluatedProperties(Object unevaluatedProperties) {
+        this.unevaluatedProperties = unevaluatedProperties;
+    }
+
+    public Schema unevaluatedProperties(Object unevaluatedProperties) {
+        this.unevaluatedProperties = unevaluatedProperties;
+        return this;
+    }
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -811,6 +995,19 @@ public class Schema<T> {
                 Objects.equals(this.extensions, schema.extensions) &&
                 Objects.equals(this.discriminator, schema.discriminator) &&
                 Objects.equals(this._enum, schema._enum) &&
+                Objects.equals(this.$schema, schema.$schema) &&
+                Objects.equals(this.$id, schema.$id) &&
+                Objects.equals(this.$anchor, schema.$anchor) &&
+                Objects.equals(this.$recursiveRef, schema.$recursiveRef) &&
+                Objects.equals(this.$recursiveAnchor, schema.$recursiveAnchor) &&
+                Objects.equals(this.$defs, schema.$defs) &&
+                Objects.equals(this.$vocabulary, schema.$vocabulary) &&
+                Objects.equals(this.propertyNames, schema.propertyNames) &&
+                Objects.equals(this.patternProperties, schema.patternProperties) &&
+                Objects.equals(this.dependentRequired, schema.dependentRequired) &&
+                Objects.equals(this.dependentSchemas, schema.dependentSchemas) &&
+                Objects.equals(this.examples, schema.examples) &&
+                Objects.equals(this.unevaluatedProperties, schema.unevaluatedProperties) &&
                 Objects.equals(this._default, schema._default);
     }
 
@@ -818,7 +1015,9 @@ public class Schema<T> {
     public int hashCode() {
         return Objects.hash(title, multipleOf, maximum, exclusiveMaximum, minimum, exclusiveMinimum, maxLength, minLength, pattern, maxItems,
                 minItems, uniqueItems, maxProperties, minProperties, required, type, not, properties, additionalProperties, description, format, $ref,
-                nullable, readOnly, writeOnly, example, externalDocs, deprecated, xml, extensions, discriminator, _enum, _default);
+                nullable, readOnly, writeOnly, example, externalDocs, deprecated, xml, extensions, discriminator, _enum, _default, $schema,
+                $id, $anchor, $recursiveRef, $recursiveAnchor, $defs, $vocabulary, propertyNames, patternProperties, dependentRequired, dependentSchemas,
+                examples, unevaluatedProperties);
     }
 
     public java.util.Map<String, Object> getExtensions() {
@@ -877,6 +1076,19 @@ public class Schema<T> {
         sb.append("    externalDocs: ").append(toIndentedString(externalDocs)).append("\n");
         sb.append("    deprecated: ").append(toIndentedString(deprecated)).append("\n");
         sb.append("    discriminator: ").append(toIndentedString(discriminator)).append("\n");
+        sb.append("    $schema: ").append(toIndentedString($schema)).append("\n");
+        sb.append("    $id: ").append(toIndentedString($id)).append("\n");
+        sb.append("    $anchor: ").append(toIndentedString($anchor)).append("\n");
+        sb.append("    $recursiveRef: ").append(toIndentedString($recursiveRef)).append("\n");
+        sb.append("    $recursiveAnchor: ").append(toIndentedString($recursiveAnchor)).append("\n");
+        sb.append("    $defs: ").append(toIndentedString($defs)).append("\n");
+        sb.append("    $vocabulary: ").append(toIndentedString($vocabulary)).append("\n");
+        sb.append("    propertyNames: ").append(toIndentedString(propertyNames)).append("\n");
+        sb.append("    patternProperties: ").append(toIndentedString(patternProperties)).append("\n");
+        sb.append("    dependentRequired: ").append(toIndentedString(dependentRequired)).append("\n");
+        sb.append("    dependentSchemas: ").append(toIndentedString(dependentSchemas)).append("\n");
+        sb.append("    examples: ").append(toIndentedString(examples)).append("\n");
+        sb.append("    unevaluatedProperties: ").append(toIndentedString(unevaluatedProperties)).append("\n");
         sb.append("    xml: ").append(toIndentedString(xml)).append("\n");
         sb.append("}");
         return sb.toString();

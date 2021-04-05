@@ -32,6 +32,8 @@ public class SwaggerConfiguration implements OpenAPIConfiguration {
 
     private Boolean sortOutput;
 
+    private Boolean openAPI31;
+
     public Long getCacheTTL() {
         return cacheTTL;
     }
@@ -254,6 +256,28 @@ public class SwaggerConfiguration implements OpenAPIConfiguration {
      */
     public SwaggerConfiguration sortOutput(Boolean sortOutput) {
         setSortOutput(sortOutput);
+        return this;
+    }
+
+    /**
+     * @since 2.1.8
+     */
+    public Boolean isOpenAPI31() {
+        return openAPI31;
+    }
+
+    /**
+     * @since 2.1.8
+     */
+    public void setOpenAPI31(Boolean v) {
+        this.openAPI31 = openAPI31;
+    }
+
+    /**
+     * @since 2.1.8
+     */
+    public SwaggerConfiguration openAPI31(Boolean openAPI31) {
+        this.openAPI31 = openAPI31;
         return this;
     }
 }

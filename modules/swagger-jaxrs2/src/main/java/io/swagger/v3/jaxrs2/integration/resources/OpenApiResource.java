@@ -29,6 +29,8 @@ public class OpenApiResource extends BaseOpenApiResource {
                                @Context UriInfo uriInfo,
                                @PathParam("type") String type) throws Exception {
 
+    	System.out.println("We are inside the swagger endpointzzz");
+    	
         return super.getOpenApi(headers, config, app, uriInfo, type);
     }
 }

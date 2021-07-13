@@ -63,16 +63,21 @@ public abstract class BaseOpenApiResource {
             	System.out.println("We are inside: BaseOpenApiResource2");
             	
                 try {
+                	
+                	System.out.println("We are inside: BaseOpenApiResource3");
+                	System.out.println("Filter class0: "+ctx.getOpenApiConfiguration().getFilterClass());
+                	
                     OpenAPISpecFilter filterImpl = (OpenAPISpecFilter) Class.forName(ctx.getOpenApiConfiguration().getFilterClass()).newInstance();
+                    System.out.println("Filter class1: "+filterImpl.getClass().getName());
                     
-                    System.out.println("We are inside: BaseOpenApiResource3");
-                    System.out.println("Filter class: "+filterImpl.getClass().getName());
+                    
                     
                     SpecFilter f = new SpecFilter();
                     oas = f.filter(oas, filterImpl, getQueryParams(uriInfo.getQueryParameters()), getCookies(headers),
                             getHeaders(headers));
                 } catch (Exception e) {
                     LOGGER.error("failed to load filter", e);
+                    System.out.println("We are inside: BaseOpenApiResource4: failed to load filter");
                 }
             }
         }

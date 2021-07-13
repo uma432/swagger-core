@@ -44,6 +44,8 @@ public class OpenApiServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+    	System.out.println("This is a test statement");
+    	
         String ctxId = getContextIdFromServletConfig(getServletConfig());
         OpenApiContext ctx = OpenApiContextLocator.getInstance().getOpenApiContext(ctxId);
         OpenAPI oas = ctx.read();

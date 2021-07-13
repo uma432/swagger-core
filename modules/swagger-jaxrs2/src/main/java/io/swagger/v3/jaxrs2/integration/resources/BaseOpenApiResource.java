@@ -51,11 +51,23 @@ public abstract class BaseOpenApiResource {
         if (ctx.getOpenApiConfiguration() != null && Boolean.TRUE.equals(ctx.getOpenApiConfiguration().isPrettyPrint())) {
             pretty = true;
         }
+        
+        System.out.println("We are inside: BaseOpenApiResource0");
 
         if (oas != null) {
+        	
+        	System.out.println("We are inside: BaseOpenApiResource1");
+        	
             if (ctx.getOpenApiConfiguration() != null && ctx.getOpenApiConfiguration().getFilterClass() != null) {
+            	
+            	System.out.println("We are inside: BaseOpenApiResource2");
+            	
                 try {
                     OpenAPISpecFilter filterImpl = (OpenAPISpecFilter) Class.forName(ctx.getOpenApiConfiguration().getFilterClass()).newInstance();
+                    
+                    System.out.println("We are inside: BaseOpenApiResource3");
+                    System.out.println("Filter class: "+filterImpl.getClass().getName());
+                    
                     SpecFilter f = new SpecFilter();
                     oas = f.filter(oas, filterImpl, getQueryParams(uriInfo.getQueryParameters()), getCookies(headers),
                             getHeaders(headers));

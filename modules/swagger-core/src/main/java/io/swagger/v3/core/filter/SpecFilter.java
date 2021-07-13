@@ -82,6 +82,9 @@ public class SpecFilter {
                         } else {
                             opTagsBeforeFilter = new ArrayList<>();
                         }
+                        
+                        System.out.println("We are inside: SpecFilter0, going to filter operations");
+                        
                         op = filterOperation(filter, op, resourcePath, key.toString(), params, cookies, headers);
                         clonedPathItem.operation(key, op);
                         if (op == null) {
@@ -151,7 +154,10 @@ public class SpecFilter {
     }
 
     protected Operation filterOperation(OpenAPISpecFilter filter, Operation operation, String resourcePath, String key, Map<String, List<String>> params, Map<String, String> cookies, Map<String, List<String>> headers) {
-        if (operation != null) {
+        
+    	System.out.println("We are inside: SpecFilter1, filterOperation0");
+    	
+    	if (operation != null) {
             ApiDescription description = new ApiDescription(resourcePath, key);
             Optional<Operation> filteredOperation = filter.filterOperation(operation, description, params, cookies, headers);
             if (filteredOperation.isPresent()) {

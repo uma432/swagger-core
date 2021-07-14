@@ -155,7 +155,7 @@ public class SpecFilter {
 
     protected Operation filterOperation(OpenAPISpecFilter filter, Operation operation, String resourcePath, String key, Map<String, List<String>> params, Map<String, String> cookies, Map<String, List<String>> headers) {
         
-    	System.out.println("We are inside: SpecFilter1, filterOperation0");
+    	System.out.println("We are inside: SpecFilter1, filterOperation0, resourcePath: "+resourcePath);
     	
     	if (operation != null) {
             ApiDescription description = new ApiDescription(resourcePath, key);

@@ -34,7 +34,12 @@ public class OpenApiResource extends BaseOpenApiResource {
                                @PathParam("type") String type) throws Exception {
 
     	System.out.println("We are inside the swagger endpointzzz");
-    	System.out.println("user: "+sec.getUserPrincipal().getName());
+    	
+    	if(sec==null) {
+    		System.out.println("security context is null");
+    	} else {
+    	System.out.println("security context is not null");
+    	}
     	
         return super.getOpenApi(headers, config, app, uriInfo, type);
     }

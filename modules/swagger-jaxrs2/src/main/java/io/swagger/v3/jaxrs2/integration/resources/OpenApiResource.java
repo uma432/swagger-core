@@ -12,6 +12,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
 
 @Path("/openapi.{type:json|yaml}")
@@ -19,6 +20,9 @@ public class OpenApiResource extends BaseOpenApiResource {
     @Context
     ServletConfig config;
 
+    @Context
+    SecurityContext sec;
+    
     @Context
     Application app;
 
@@ -30,6 +34,7 @@ public class OpenApiResource extends BaseOpenApiResource {
                                @PathParam("type") String type) throws Exception {
 
     	System.out.println("We are inside the swagger endpointzzz");
+    	System.out.println("user: "+sec.getUserPrincipal().getName());
     	
         return super.getOpenApi(headers, config, app, uriInfo, type);
     }

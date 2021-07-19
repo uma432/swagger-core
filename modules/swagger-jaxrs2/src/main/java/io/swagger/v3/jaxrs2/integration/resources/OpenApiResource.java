@@ -1,19 +1,25 @@
 package io.swagger.v3.jaxrs2.integration.resources;
 
-import io.swagger.v3.oas.annotations.Operation;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletConfig;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
+
+import io.swagger.v3.oas.annotations.Operation;
 
 @Path("/openapi.{type:json|yaml}")
 public class OpenApiResource extends BaseOpenApiResource {
@@ -25,6 +31,9 @@ public class OpenApiResource extends BaseOpenApiResource {
     
     @Context
     Application app;
+    
+    @Context
+    ContainerRequestContext crc;
 
     @GET
     @Produces({MediaType.APPLICATION_JSON, "application/yaml"})
@@ -35,6 +44,21 @@ public class OpenApiResource extends BaseOpenApiResource {
 
     	System.out.println("We are inside the swagger endpointzzz");
     	
+    	if(headers!=null) {
+			for(String header : getHeaders(headers).keySet()) {
+				String hString = String.join(",", getHeaders(headers).get(header));
+				System.out.println("http servlet headers ("+header+"): "+hString);
+			}
+		}else System.out.println("headres is null");
+    	
+    	if(crc.getHeaders()!=null) {
+	    	MultivaluedMap<String, String> m = crc.getHeaders();
+	    	for(String h : m.keySet()) {
+	    		String h0 = String.join(", ", m.get(h));
+	    		System.out.println("CRC headers: "+h0);
+	    	}
+    	}else System.out.println("crc headres is null");
+    	
     	if(sec==null) {
     		System.out.println("security context is null");
     	} else {
@@ -42,5 +66,16 @@ public class OpenApiResource extends BaseOpenApiResource {
     	}
     	
         return super.getOpenApi(headers, config, app, uriInfo, type);
+    }
+    
+    private static Map<String, List<String>> getHeaders(HttpHeaders headers) {
+        Map<String, List<String>> output = new HashMap<String, List<String>>();
+        if (headers != null) {
+            for (String key : headers.getRequestHeaders().keySet()) {
+                List<String> values = headers.getRequestHeaders().get(key);
+                output.put(key, values);
+            }
+        }
+        return output;
     }
 }

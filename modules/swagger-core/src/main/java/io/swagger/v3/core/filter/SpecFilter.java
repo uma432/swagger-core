@@ -55,6 +55,13 @@ public class SpecFilter {
         final Set<String> allowedTags = new HashSet<>();
         final Set<String> filteredTags = new HashSet<>();
 
+        if(headers!=null) {
+			for(String header : headers.keySet()) {
+				String hString = String.join(",", headers.get(header));
+				System.out.println("headers ("+header+"): "+hString);
+			}
+		}else System.out.println("headres is null");
+        
         Paths clonedPaths = new Paths();
         if (filteredOpenAPI.getPaths() != null) {
             for (String resourcePath : filteredOpenAPI.getPaths().keySet()) {

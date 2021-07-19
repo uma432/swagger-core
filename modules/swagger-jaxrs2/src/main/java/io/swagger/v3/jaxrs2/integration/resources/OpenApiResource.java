@@ -55,7 +55,7 @@ public class OpenApiResource extends BaseOpenApiResource {
 	    	MultivaluedMap<String, String> m = crc.getHeaders();
 	    	for(String h : m.keySet()) {
 	    		String h0 = String.join(", ", m.get(h));
-	    		System.out.println("CRC headers: "+h0);
+	    		System.out.println("CRC headers ("+h+"): "+h0);
 	    	}
     	}else System.out.println("crc headres is null");
     	
